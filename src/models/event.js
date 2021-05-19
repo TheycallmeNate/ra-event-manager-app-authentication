@@ -20,8 +20,21 @@ const eventSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  dateTime: {
+  date: {
     type: Date,
     required: true,
   },
+  startTime: {
+    type: String,
+    required: true,
+  },
+  endTime: {
+    type: String,
+    required: true,
+  },
+  tags: Array,
 });
+
+const Event = mongoose.model("Event", eventSchema);
+
+module.exports = Event;

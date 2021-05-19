@@ -37,10 +37,20 @@ exports.updateEntireEvent = (req, res) => {
     { new: true, runValidators: true },
     (error, result) => {
       if (error) return res.status(500).json({ message: error });
-      if (!result) return res.status(404).json({ message: "Event not found" });
+      if (!result) return res.status(404).json({ message: "Event not found." });
       return res
         .status(200)
         .json({ message: "Event updated successfully", result });
     }
   );
+};
+
+exports.deleteSingleEvent = (req, res) => {
+  EventModel.findByIdAndDelete(req.params.id, (error, result) => {
+    if (error) return res.status(500).json({ message: error });
+    if (!result) return res.status(404).json({ message: "Event not found." });
+    return res
+      .status(200)
+      .json({ message: `${result.title.toUpperCase()} was deleted.` });
+  });
 };

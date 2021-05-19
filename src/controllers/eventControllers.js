@@ -1,8 +1,8 @@
-const Event = require("../models/event");
+const EventModel = require("../models/event");
 
 exports.createNewEvent = (req, res) => {
-  Event.create({ ...req.body }, (error, newEvent) => {
-    if (error) res.status(500).json({ message: error });
+  EventModel.create({ ...req.body }, (error, newEvent) => {
+    if (error) return res.status(500).json({ message: error });
 
     return res
       .status(201)
@@ -16,8 +16,16 @@ exports.fetchEvents = (req, res) => {
   if (req.query.category) filter.category = req.query.category;
 
   Event.find(filter, (error, results) => {
-    if (error) res.status(500).json({ message: error });
+    if (error) return res.status(500).json({ message: error });
 
-    return res.status(200).json(results);
+    return res.status(200).json({ results });
+  });
+};
+
+exports.fetchSingleEvent = (req, res) => {
+  EventModel.findById(req.params.id, (error, result) => {
+    if (error) return res.status(500).json({ message: error });
+    if (!result) return res.status(404).json({ message: "Event not found." });
+    return res.status(200).json({ result });
   });
 };

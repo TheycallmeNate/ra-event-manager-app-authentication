@@ -29,3 +29,18 @@ exports.fetchSingleEvent = (req, res) => {
     return res.status(200).json({ result });
   });
 };
+
+exports.updateEntireEvent = (req, res) => {
+  EventModel.findByIdAndUpdate(
+    req.params.id,
+    { ...req.body },
+    { new: true, runValidators: true },
+    (error, result) => {
+      if (error) return res.status(500).json({ message: error });
+      if (!result) return res.status(404).json({ message: "Event not found" });
+      return res
+        .status(200)
+        .json({ message: "Event updated successfully", result });
+    }
+  );
+};

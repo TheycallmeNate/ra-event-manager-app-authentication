@@ -15,7 +15,7 @@ exports.fetchEvents = (req, res) => {
 
   if (req.query.category) filter.category = req.query.category;
 
-  Event.find(filter, (error, results) => {
+  EventModel.find(filter, (error, results) => {
     if (error) return res.status(500).json({ message: error });
 
     return res.status(200).json({ results });

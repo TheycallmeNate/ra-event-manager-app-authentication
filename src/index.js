@@ -3,7 +3,7 @@ const app = express();
 const port = 4000;
 const dbSetup = require("./database/setup");
 
-// REQUIRE ROUTES
+// Routes
 const eventRoutes = require("./routes/eventRoutes");
 const authRoutes = require("./routes/authRoutes");
 

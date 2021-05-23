@@ -56,3 +56,30 @@ exports.registerNewUser = (req, res) => {
     );
   });
 };
+
+exports.loginUser = (req, res) => {
+  UserModel.findOne({ email: req.body.email }, (error, foundUser) => {
+    if (error) return res.status(500).json({ err });
+
+    if (!foundUser) return res.status(401).json({ message: "incorrect email" });
+
+    let match = bcryptjs.compareSync(req.body.password, foundUser.password);
+
+    if (!match) return res.status(401).json({ message: "incorrect password" });
+
+    jwt.sign(
+      {
+        id: foundUser._id,
+        username: foundUser.username,
+        firstName: foundUser.firstName,
+        lastName: foundUser.lastName,
+      },
+      secret,
+      { expiresIn: expiry },
+      (error, token) => {
+        if (error) return res.status(500).json({ err });
+        return res.status(200).json({ message: "user logged in", token });
+      }
+    );
+  });
+};
